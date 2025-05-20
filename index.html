@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FF Bot | Free Fire Discord Bot</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/scrollreveal"></script>
+</head>
+<body>
+
+<div id="ff-popup" class="popup-overlay" style="display: none;">
+  <div class="popup-box">
+    <h2>Are you a Free Fire Gamer?</h2>
+    <div class="popup-buttons">
+      <button onclick="continueToSite()" class="btn-yes">Yes</button>
+      <button onclick="exitSite()" class="btn-no">No</button>
+    </div>
+  </div>
+  <audio id="popup-sound" src="/sounds/popup_dramatic.mp3" preload="auto"></audio>
+</div>
+
+  <header class="hero" id="home">
+    <nav>
+      <a href="index.html" class="logo-container">
+        <img src="images/logo.jpeg" alt="Character" class="logo-img">
+        <div class="logo">Accu Gaming</div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#" class="btn-premium-nav">Premium</a></li>
+        <li id="auth-section"></li>
+      </ul>
+    </nav>
+
+```
+  <div class="hero-content-wrapper">
+<video autoplay muted loop playsinline id="bg-video">
+  <source src="videos/background.mp4" type="video/mp4">
+</video>
+
+<div class="hero-content">
+  <h1 class="fade">Free Fire Discord Bot<br><span>for YouTubers & Squads</span></h1>
+  <p class="fade">Auto YouTube live alerts, upload tracking, and powerful profile tools — all built for gamers and creators.</p>
+  <a href="https://discord.com/oauth2/authorize?client_id=1339754249894105190&permissions=8&scope=bot+applications.commands" class="btn-primary fade" target="_blank">Add To Discord</a>
+</div>
+```
+
+  </header>
+
+  <section class="features" id="features">
+    <div class="feature reveal-left">
+      <img src="images/live.png" alt="YouTube Live Notification" />
+      <div class="text">
+        <h2>📺 YouTube Live Stream Alerts</h2>
+        <p>Send automatic embed notifications when you go live. Tag specific roles, use custom messages, and choose your notification channel.</p>
+      </div>
+    </div>
+
+```
+<div class="feature reverse reveal-right">
+  <img src="images/upload.png" alt="YouTube Uploads" />
+  <div class="text">
+    <h2>🎥 Upload & Shorts Tracker</h2>
+    <p>Instant alerts when you upload videos or shorts. Fully customizable messages to keep your community engaged without lifting a finger.</p>
+  </div>
+</div>
+
+<div class="feature reveal-left">
+  <img src="images/gameprofile.png" alt="Game Profile" />
+  <div class="text">
+    <h2>🎮 Free Fire Game Profiles</h2>
+    <p>Allow members to set IGN, UID, avatar, and rank. View and compare profiles inside Discord — perfect for guilds and tournaments.</p>
+  </div>
+</div>
+
+<div class="feature reverse reveal-right">
+  <img src="images/profilechannel.png" alt="Set Profile Channel" />
+  <div class="text">
+    <h2>📌 Set Profile Channel</h2>
+    <p>Designate a clean, premium channel for viewing game profiles. Keep your server organized while showcasing your players.</p>
+  </div>
+</div>
+
+<div class="feature reveal-left">
+  <img src="images/help.png" alt="Help Command" />
+  <div class="text">
+    <h2>📖 Help Command</h2>
+    <p>Quickly view all bot features and commands with one slash. Beautifully formatted help embed that updates as your bot grows.</p>
+  </div>
+</div>
+```
+
+  </section>
+
+  <footer id="support">
+    <p>© 2025 Accu Gaming Bot. All rights reserved. | <a href="https://discord.gg/MFKkNjGpEj" target="_blank" rel="noopener">Join Support Server</a></p>
+  </footer>
+
+  <!-- ✅ Scripts -->
+
+  <script>
+    function continueToSite() {
+      const popupSound = document.getElementById('popup-sound');
+      document.getElementById('ff-popup').style.display = 'none';
+      localStorage.setItem('popupAccepted', 'true');
+      popupSound.volume = 0.3;
+      popupSound.play().catch(err => console.warn('Sound play failed:', err));
+    }
+  
+    function exitSite() {
+      const popupSound = document.getElementById('popup-sound');
+      document.getElementById('ff-popup').style.display = 'none';
+      popupSound.volume = 0.7;
+      popupSound.play().catch(err => console.warn('Sound play failed:', err));
+      window.location.href = 'https://www.example.com'; // Replace with your real redirect
+    }
+  
+    window.onload = function () {
+      // Step 1: Check for OAuth callback data
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get("username");
+      const avatar = params.get("avatar");
+      const id = params.get("id");
+  
+      if (username && avatar && id) {
+        const avatarURL = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`;
+        localStorage.setItem("discordUser", JSON.stringify({ username, avatarURL, id }));
+        window.history.replaceState({}, document.title, "/");
+      }
+  
+      // Step 2: Show Discord user info if available
+      const user = JSON.parse(localStorage.getItem('discordUser'));
+      const authSection = document.getElementById('auth-section');
+      if (user) {
+        authSection.innerHTML = `
+          <div class="user-info">
+            <img src="${user.avatarURL}" alt="Avatar" />
+            <span>${user.username}</span>
+            <button class="btn-logout-nav" onclick="logout()">Logout</button>
+          </div>
+        `;
+      } else {
+        authSection.innerHTML = `<a href="http://localhost:3001/login" class="btn-login-nav">Login</a>`;
+      }
+  
+      // Step 3: Show popup if not accepted before
+      if (localStorage.getItem('popupAccepted') !== 'true') {
+        document.getElementById('ff-popup').style.display = 'flex';
+      }
+  
+      // Step 4: ScrollReveal animations
+      ScrollReveal().reveal('.reveal-left', { origin: 'left', distance: '80px', duration: 1200, delay: 200 });
+      ScrollReveal().reveal('.reveal-right', { origin: 'right', distance: '80px', duration: 1200, delay: 200 });
+      ScrollReveal().reveal('.fade', { opacity: 0, duration: 1000, distance: '0px', delay: 200 });
+    };
+  </script>  
+
+</body>
+</html>

@@ -1,0 +1,477 @@
+/* Reset and Fonts */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0e0e1a;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 3%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo-container {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffcf0d;
+  text-shadow: 0 0 0px #ffcc00aa;
+  animation: glow 3s ease-in-out infinite alternate;
+}
+
+.logo-img {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 5px #ffcc00aa;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 0px #ffcc00, 0 0 8px #ffcc00aa;
+  }
+  to {
+    text-shadow: 0 0 0px #ffcc00, 0 0 20px #ffcc00;
+  }
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #ffcc00;
+  transition: 0.4s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: #ff4343;
+}
+
+/* Buttons */
+.btn,
+.btn-outline,
+.btn-primary,
+.btn-login-nav {
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.btn {
+  background: #ffcc00;
+  color: #000;
+  padding: 0.45rem 0.9rem;
+}
+
+.btn:hover {
+  background: #fff000;
+  box-shadow: 0 0 10px #ffcc00aa;
+}
+
+.btn-outline {
+  padding: 0.45rem 0.9rem;
+  border: 2px solid #ffcc00;
+  color: #ffcc00;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: #ffcc00;
+  color: #000;
+}
+
+.btn-login-nav {
+  padding: 5px 12px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  margin-left: 8px;
+}
+
+.btn-login-nav:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffcc00;
+}
+
+.btn-primary {
+  background: #ffcc00;
+  color: #000;
+  padding: 0.6rem 1.4rem;
+}
+
+.btn-primary:hover {
+  background: #fff000;
+  color: #000;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 5%;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+  }
+
+  .btn, .btn-outline, .btn-login-nav {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 5rem 5% 3rem;
+  background: url('https://i.imgur.com/Fm9zLtx.jpg') no-repeat center center/cover;
+  position: relative;
+  color: #fff;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.hero-content-wrapper {
+  position: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10rem;
+  overflow: hidden;
+  border-radius: 12px; /* optional, for rounded edges */
+}
+
+#bg-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  filter: brightness(0.5); /* darken video for text contrast */
+  border-radius: 12px; /* match wrapper */
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 8000px;
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 15px #000;
+}
+
+.hero h1 span {
+  color: #ffcc00;
+  text-shadow: 0 0 20px #ffcc00aa;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #e0e0e0;
+}
+
+/* Features */
+.features {
+  padding: 4rem 5%;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.feature.reverse {
+  flex-direction: row-reverse;
+}
+
+.feature img {
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+.feature .text {
+  flex: 1;
+}
+
+.feature h2 {
+  color: #ffcc00;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  transition: color 0.3s;
+}
+
+.feature p {
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+
+.feature:hover h2,
+.feature:hover p {
+  color: #ffcc00;
+}
+
+/* Footer */
+footer {
+  padding: 2rem 5%;
+  text-align: center;
+  background: #111;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+footer a {
+  color: #ffcc00;
+  text-decoration: none;
+  margin-left: 0.5rem;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .feature {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .feature.reverse {
+    flex-direction: column;
+  }
+
+  .feature img {
+    max-width: 90%;
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .logo-img {
+    height: 40px;
+    width: 40px;
+  }
+}
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Popup Box with Glassmorphism */
+.popup-box {
+  background: rgba(30, 30, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+  padding: 35px 30px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: scale(0.98);
+  animation: popIn 0.4s ease forwards;
+}
+
+.popup-box h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffecb3;
+}
+
+.popup-box p {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #ccc;
+}
+
+/* Buttons */
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.popup-buttons button {
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease, background 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* Yes Button */
+.btn-yes {
+  background: linear-gradient(135deg, #00e676, #00c853);
+  color: #fff;
+}
+
+.btn-yes:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #00f57d, #00d463);
+}
+
+/* No Button */
+.btn-no {
+  background: linear-gradient(135deg, #ff5252, #d32f2f);
+  color: #fff;
+}
+
+.btn-no:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #ff6e6e, #e53935);
+}
+
+/* Fade & Pop Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.btn-dashboard-nav {
+  padding: 8px 15px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-dashboard-nav:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+

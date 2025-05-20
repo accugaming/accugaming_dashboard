@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/configure.css" />
+</head>
+<body>
+  <header class="hero" id="home">
+      <h1>AccuBot Admin Dashboard</h1>
+    <nav>
+      <a>
+        <img src="/images/logo.jpeg" alt="Character" class="logo-img" />
+        <div class="logo">Accu Gaming</div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/support">Support</a></li>
+        <li><a href="#" class="btn-premium-nav">Premium</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+        <li id="auth-section"></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- USERS -->
+  <section>
+    <h2>👥 Users</h2>
+    <table id="users">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Discord ID</th>
+          <th>Email</th>
+          <th>Joined At</th>
+          <!-- Add more user fields as per your DB -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- GAME PROFILES -->
+  <section>
+    <h2>📊 Game Profiles</h2>
+    <table id="gameProfiles">
+      <thead>
+        <tr>
+          <th>Discord ID</th>
+          <th>Guild</th>
+          <th>Game Name</th>
+          <th>UID</th>
+          <th>Level</th>
+          <th>BR Rank</th>
+          <th>CS Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- LIVE NOTIFICATIONS -->
+  <section>
+    <h2>🔴 Live Notification Settings</h2>
+    <table id="liveNotifications">
+      <thead>
+        <tr>
+          <th>Guild</th>
+          <th>YouTube Channel</th>
+          <th>Discord Channel</th>
+          <th>Notify Role</th>
+          <th>Custom Message</th>
+          <th>Is Live?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- UPLOAD NOTIFICATIONS -->
+  <section>
+    <h2>⬆️ Upload Notification Settings</h2>
+    <table id="uploadNotifications">
+      <thead>
+        <tr>
+          <th>Guild</th>
+          <th>YouTube Channel</th>
+          <th>Discord Channel</th>
+          <th>Notify Role</th>
+          <th>Custom Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- LAST UPLOADED VIDEOS -->
+  <section>
+    <h2>🎥 Last Uploaded Videos</h2>
+    <table id="lastUploadedVideos">
+      <thead>
+        <tr>
+          <th>YouTube Channel</th>
+          <th>Video ID</th>
+          <th>Title</th>
+          <th>Uploaded At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PERMISSIONS -->
+  <section>
+    <h2>🔐 Permissions</h2>
+    <table id="permissions">
+      <thead>
+        <tr>
+          <th>Guild</th>
+          <th>User ID</th>
+          <th>Permission</th>
+          <th>Granted At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SERVER SETTINGS -->
+  <section>
+    <h2>⚙️ Server Settings</h2>
+    <table id="serverSettings">
+      <thead>
+        <tr>
+          <th>Guild</th>
+          <th>Setting Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- LIVE STATUS -->
+  <section>
+    <h2>📡 Live Status</h2>
+    <table id="liveStatus">
+      <thead>
+        <tr>
+          <th>YouTube Channel</th>
+          <th>Status</th>
+          <th>Last Checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JS will inject data here -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FREE FIRE NEWS -->
+  <section>
+    <h2>📰 Free Fire News</h2>
+    <table id="ffNews">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Summary</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+  </section>
+  <script>
+// Utility to create table rows from an array of objects and append to tbody
+function populateTable(tableId, data) {
+  const tbody = document.querySelector(`#${tableId} tbody`);
+  tbody.innerHTML = ''; // Clear existing rows
+
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    // For each key in the object, create a td and append value
+    Object.values(row).forEach(value => {
+      const td = document.createElement('td');
+
+      // If the value looks like a URL, make it clickable link
+      if (typeof value === 'string' && value.startsWith('http')) {
+        const a = document.createElement('a');
+        a.href = value;
+        a.textContent = value;
+        a.target = '_blank';
+        td.appendChild(a);
+      } else {
+        td.textContent = value;
+      }
+
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  if (data.length === 0) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = document.querySelectorAll(`#${tableId} thead th`).length;
+    td.textContent = 'No data found.';
+    td.style.textAlign = 'center';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
+}
+
+// List of tables and their API endpoints
+const tables = [
+  { id: 'users', endpoint: '/api/users' },
+  { id: 'gameProfiles', endpoint: '/api/game_profiles' },
+  { id: 'liveNotifications', endpoint: '/api/live_notifications' },
+  { id: 'uploadNotifications', endpoint: '/api/upload_notifications' },
+  { id: 'lastUploadedVideos', endpoint: '/api/last_uploaded_videos' },
+  { id: 'permissions', endpoint: '/api/permissions' },
+  { id: 'serverSettings', endpoint: '/api/server_settings' },
+  { id: 'liveStatus', endpoint: '/api/live_status' },
+  { id: 'ffNews', endpoint: '/api/ff_news' },
+];
+
+// Fetch and populate all tables
+async function loadAllTables() {
+  for (const table of tables) {
+    try {
+      const response = await fetch(table.endpoint);
+      if (!response.ok) throw new Error(`Failed to load ${table.id}`);
+      const data = await response.json();
+      populateTable(table.id, data);
+    } catch (error) {
+      console.error(error);
+      // Show error message in table body
+      const tbody = document.querySelector(`#${table.id} tbody`);
+      tbody.innerHTML = `<tr><td colspan="${document.querySelectorAll(`#${table.id} thead th`).length}" style="text-align:center;color:red;">Error loading data</td></tr>`;
+    }
+  }
+}
+
+// Load tables when DOM is ready
+document.addEventListener('DOMContentLoaded', loadAllTables);
+</script>
+</body>
+</html>

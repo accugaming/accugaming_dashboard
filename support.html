@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Support - Free Fire Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/support.css" />
+</head>
+<body>
+  <header class="hero" id="home">
+    <nav>
+      <a href="/">
+        <img src="images/logo.jpeg" alt="Character" class="logo-img" />
+        <div class="logo">Accu Gaming</div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#support">Support</a></li>
+        <li><a href="#" class="btn-premium-nav">Premium</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+        <li id="auth-section"></li> <!-- User info injected here -->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Need Help?</h1>
+    <p>Welcome to the support center. Here are some helpful links:</p>
+    <ul class="support-links">
+      <li><a href="https://discord.gg/MFKkNjGpEj" target="_blank">Join Support Server</a></li>
+      <li>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=accugaming023@gmail.com&su=Support%20Request" target="_blank" rel="noopener noreferrer">Email Support</a>
+      </li>
+    </ul>
+
+    <h2>Report a Bug</h2>
+    <p>If you found a bug, let us know in our Discord support server.</p>
+  </main>
+
+  <script>
+    async function loadUserInfo() {
+      try {
+        const userRes = await fetch("/api/user");
+        if (!userRes.ok) return;
+
+        const user = await userRes.json();
+
+        const authSection = document.getElementById("auth-section");
+        if (authSection) {
+          authSection.innerHTML = `
+            <div class="user-info-nav">
+              <img class="avatar-nav" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="User Avatar" />
+              <span class="username-nav">${user.username}</span>
+              <button onclick="logout()" class="logout-button-nav" title="Logout">🚪</button>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error("Failed to load user info.", err);
+      }
+    }
+
+    function logout() {
+      window.location.href = "/logout";
+    }
+
+    loadUserInfo();
+  </script>
+</body>
+</html>

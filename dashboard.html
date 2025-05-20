@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/dashboard.css" />
+</head>
+<body>
+  <header class="hero" id="home">
+    <nav>
+      <a>
+        <img src="images/logo.jpeg" alt="Character" class="logo-img" />
+        <div class="logo">Accu Gaming</div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/support">Support</a></li>
+        <li><a href="#" class="btn-premium-nav">Premium</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+        <li id="auth-section"></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2 class="your-server-heading" style="text-align: center; margin-top: 20px;">Your Servers</h2>
+    <div id="loading" class="loading">Loading your servers...</div>
+    <div id="guildsContainer" class="guilds-container"></div>
+  </main>
+
+  <script>
+    const CLIENT_ID = "{{client_id}}"; // Replace with your client ID server-side if templated
+
+    const defaultIcons = [
+      "https://cdn.discordapp.com/embed/avatars/0.png",
+      "https://cdn.discordapp.com/embed/avatars/1.png",
+      "https://cdn.discordapp.com/embed/avatars/2.png",
+      "https://cdn.discordapp.com/embed/avatars/3.png",
+      "https://cdn.discordapp.com/embed/avatars/4.png"
+    ];
+
+    function getDefaultIcon(guild) {
+      const index = parseInt(guild.id) % 5;
+      return defaultIcons[index];
+    }
+
+    async function loadDashboard() {
+      try {
+        const [userRes, guildsRes] = await Promise.all([
+          fetch("/api/user"),
+          fetch("/api/guilds")
+        ]);
+
+        if (!userRes.ok || !guildsRes.ok) {
+          window.location.href = "/login";
+          return;
+        }
+
+        const user = await userRes.json();
+        const guilds = await guildsRes.json();
+
+        document.getElementById("loading").style.display = "none";
+
+        // Inject user info in nav bar
+        const authSection = document.getElementById("auth-section");
+        if (authSection) {
+          authSection.innerHTML = `
+            <div class="user-info-nav">
+              <img class="avatar-nav" src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="User Avatar" />
+              <span class="username-nav">${user.username}</span>
+              <button onclick="logout()" class="logout-button-nav" title="Logout">🚪</button>
+            </div>
+          `;
+        }
+
+        const container = document.getElementById("guildsContainer");
+        container.innerHTML = ""; // Clear container before appending
+
+        guilds.forEach(guild => {
+          const icon = guild.icon
+            ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
+            : getDefaultIcon(guild);
+
+          const inviteLink = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot%20applications.commands&permissions=8&guild_id=${guild.id}&disable_guild_select=true`;
+
+          container.innerHTML += `
+            <div class="guild-card">
+              <img src="${icon}" class="guild-icon" alt="Server Icon" />
+              <h3>${guild.name}</h3>
+              ${
+                guild.botInGuild
+                  ? `<a href="/server/${guild.id}" class="configure-btn">⚙️ Configure</a>`
+                  : `<a href="${inviteLink}" class="addbot-btn" target="_blank" rel="noopener noreferrer">➕ Add Bot</a>`
+              }
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error("Dashboard Load Failed:", err);
+        window.location.href = "/login";
+      }
+    }
+
+    function logout() {
+      window.location.href = "/logout";
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
